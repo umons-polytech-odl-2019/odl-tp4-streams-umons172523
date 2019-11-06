@@ -20,9 +20,26 @@ public class Classroom {
 
     }
 
-    public double averageScore() {
+    public double averageScore()
+    {
+        return students.stream()
+                .flatMapToInt(student -> student.getScoreByCourse().values().stream().mapToInt(Integer::intValue))//1)
+                .average()
+                .orElse(0.0);
+                // on fait un flux d'etudiant
+                // a chaque etudiant on fait une map et on crée donc un nvx  flux
+                // on fait correspondre a chaque elment la valeur
+                // de ces valeur on fait un nvx stream pour pouvoir traiter les données
+                 //on transfomre les valeurs en int
+                // la ligne1) donne au final un entier
+                //.flatMapToInt() pour associer le resultat d'un student avec un flux (on l applanit)
+                //on a au final une serie de valeur entiere dont on calcul la moyenne et si pas de valeur on renvoie 0.0(double)
+                //----->pour s'assurrer que la valeur retourne tjs qqchose
 
-        double sum = 0;
+
+                //note si on fait un programme et qu'on veut retourner une erreur on note -1
+
+      /*  double sum = 0;
         int cpt = 0;
         for (Student student : students) {
             for (Map.Entry<String, Integer> courses : student.getScoreByCourse().entrySet()) {
@@ -31,6 +48,8 @@ public class Classroom {
             }
         }
         return (sum / cpt);
+
+       */
     }
 
     public int countStudents() {
@@ -49,9 +68,18 @@ public class Classroom {
             .collect(Collectors.toList());
     }
 
-    public List<Student> successfulStudents() {
+    public List<Student> successfulStudents()
+    {
+        return students.stream()
+                .filter(Student::isSuccessful)
+                .sorted(Comparator.comparingDouble(student -> -student.averageScore()))
+                .collect(Collectors.toList());
 
-        Set<Student> studentSet = new TreeSet<>(
+        // on filtre les etudiants qui ont réussi, on utilise un booléens avec isSuccessful
+        //-student.averageScore() on a mis ça pour avoir un ordre décroissant facilement
+        //on rassemble les résultats, on transforme en liste d'élément
+
+        /* Set<Student> studentSet = new TreeSet<>(
                 Comparator.comparingDouble(student -> -student.averageScore()));
 
         for (Student s : students) {
@@ -64,6 +92,8 @@ public class Classroom {
         for (Student s : studentSet)
             studentList.add(s);
         return studentList;
+
+        */
 
     }
 }
