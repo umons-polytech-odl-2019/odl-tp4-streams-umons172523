@@ -52,11 +52,21 @@ public class Exercice1 {
      * @param peoples
      * @return average age of given list of Employees
      */
-    private static double lambda(List<? extends Employee> peoples){
+    private static double lambda(List<? extends Employee> peoples)
+    {
         // Compléter le code par le traitement d'un stream équivalent
         // à celui de la fonction calculateAverage
 
-        return 0;
+       return peoples.stream().mapToInt(p->p.getAge()).average().getAsDouble();
+       //transforme les peoples(liste finie) en un flux qu'on met en un flux d'entier
+        //et on s'occupe que des données selon l'age
+        // (on utilise un accesseur getAge, a chaque élément p de people onfait correspondre une liste d'age qui est un int)
+        // chaque instance est donc transformé en age
+        // résultat attendu est un double or on a un float donc on le transforme en double
+
+        //on fait correspondre un element de classe a un entier (p->p.getAge()) donc on utilise bien un lambda
+        //on pourrait aussi faire return(Double)peoples.....
+
     }
 
 }
