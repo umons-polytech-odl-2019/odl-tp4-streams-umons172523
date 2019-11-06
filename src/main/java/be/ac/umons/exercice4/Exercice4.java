@@ -27,7 +27,7 @@ public class Exercice4 {
         String filePath = null;
 
         if (args.length == 0)
-            filePath = new String("dracula.txt");
+            filePath = new String("grosarticle.txt");
         else if (args.length > 0 && args[0] != null && !args[0].isEmpty())
         {
             filePath = args[0];
@@ -37,7 +37,7 @@ public class Exercice4 {
             String regex = new String("[ ,\\.;:'\\-_()\\=’\\|\\[\\]\\{\\}\"@\\*#/\\?\\!«»]");
 
             Map<String, Long> words =
-                    stream.flatMap(line -> Arrays.stream(line.split(regex)))  // découpe en utilisant une regex pour trouver les séparateurs
+                    stream.flatMap(line -> Arrays.stream(line.split(regex))).parallel()  // découpe en utilisant une regex pour trouver les séparateurs
                     .filter(line -> Optional.ofNullable(line).orElse("").length() != 0)  // enlève les lignes vides
                     .filter(word -> word.length() >= 6 && word.length() <= 12)  // garde uniquement les mots d'une longueur de 6 à 12 lettres
                     .map(String::toLowerCase)  // les mets tous en minuscule
@@ -54,7 +54,10 @@ public class Exercice4 {
             récupère tous les couples clé, valeur
             les trie par valeur et les insèrent du plus petit au plus grand
              */
-            words.entrySet().stream()
+            /*words.entrySet().parallelStream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .forEachOrdered(x -> sortedWords.put(x.getKey(), x.getValue()));*/
+            words.entrySet().parallelStream()
                     .sorted(Map.Entry.comparingByValue())
                     .forEachOrdered(x -> sortedWords.put(x.getKey(), x.getValue()));
 
